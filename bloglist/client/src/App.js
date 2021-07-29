@@ -5,25 +5,20 @@ import Login from './components/Login'
 import Notification from './components/Notification'
 import AddBlogForm from './components/AddBlogForm'
 import Toggleable from './components/Toggleable'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showNotification } from './store/actions/notification'
+import { setBlogs } from './store/actions/blogs'
 
 const App = () => {
   const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blogs.blogs)
 
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState(null)
 
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs))
-      .catch(() => {
-        showMessage('Something went wrong. Please try again later.', 'error')
-      })
+    dispatch(setBlogs())
   }, [])
 
   useEffect(() => {
@@ -37,10 +32,6 @@ const App = () => {
 
   const showMessage = (text, type) => {
     dispatch(showNotification({ text, type }))
-
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 4000)
   }
 
   const handleLogout = () => {
@@ -53,7 +44,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog))
+        console.log(returnedBlog)
         showMessage(
           `a new blog ${blogObject.title} by ${blogObject.author} added`
         )
@@ -96,11 +87,11 @@ const App = () => {
     blogService
       .remove(id)
       .then(() => {
-        setBlogs(
-          blogs
-            .filter((blog) => blog.id !== id)
-            .sort((a, b) => b.likes - a.likes)
-        )
+        // setBlogs(
+        //   blogs
+        //     .filter((blog) => blog.id !== id)
+        //     .sort((a, b) => b.likes - a.likes)
+        // )
         showMessage('blog was removed')
       })
       .catch((error) => {
@@ -137,7 +128,7 @@ const App = () => {
         </div>
       )}
 
-      <Notification message={notificationMessage} />
+      <Notification />
       <div id="blogs-list">
         {blogs
           .sort((a, b) => b.likes - a.likes)
