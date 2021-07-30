@@ -21,8 +21,8 @@ const create = async (newObject) => {
   return response.data
 }
 
-const like = async (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+const like = async (id, likedBlog) => {
+  const request = axios.put(`${baseUrl}/${id}`, likedBlog)
   return request.then((response) => response.data)
 }
 

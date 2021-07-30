@@ -60,23 +60,6 @@ const App = () => {
       })
   }
 
-  const likeBlog = (id, blogObject) => {
-    blogService
-      .like(id, blogObject)
-      .then(() => {
-        showMessage(`you liked ${blogObject.title}`)
-      })
-      .catch((error) => {
-        if (!error.response.data.errorMessage) {
-          return showMessage(
-            'Something went wrong. Please try again later.',
-            'error'
-          )
-        }
-        showMessage(error.response.data.errorMessage, 'error')
-      })
-  }
-
   const deleteBlog = (id, blogObject) => {
     const result = window.confirm(`Delete ${blogObject.title}?`)
 
@@ -87,11 +70,11 @@ const App = () => {
     blogService
       .remove(id)
       .then(() => {
-        // setBlogs(
-        //   blogs
-        //     .filter((blog) => blog.id !== id)
-        //     .sort((a, b) => b.likes - a.likes)
-        // )
+        setBlogs(
+          blogs
+            .filter((blog) => blog.id !== id)
+            .sort((a, b) => b.likes - a.likes)
+        )
         showMessage('blog was removed')
       })
       .catch((error) => {
@@ -136,7 +119,6 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              addLike={likeBlog}
               removeBlog={deleteBlog}
               user={user}
             />

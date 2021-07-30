@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, likeBlog } from '../store/actions/blogs'
+import { showNotification } from '../store/actions/notification'
 
-const Blog = ({ user, blog, addLike, removeBlog }) => {
+const Blog = ({ user, blog }) => {
+  const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -15,13 +19,15 @@ const Blog = ({ user, blog, addLike, removeBlog }) => {
     marginBottom: 5,
   }
 
-  const likeBlog = () => {
-    blog.likes += 1
-    addLike(blog.id, blog)
+  const handleLikeBlog = (blog) => {
+    const likedBlog = { ...blog, likes: blog.likes + 1 }
+    dispatch(likeBlog(blog.id, likedBlog))
+    dispatch(showNotification({ text: `You liked ${blog.title}` }))
   }
 
-  const deleteBlog = async () => {
-    await removeBlog(blog.id, blog)
+  const handleDeleteBlog = (blog) => {
+    // await removeBlog(blog.id, blog)
+    dispatch(deleteBlog(blog.id))
   }
 
   return (
@@ -37,14 +43,14 @@ const Blog = ({ user, blog, addLike, removeBlog }) => {
           <p>{blog.url}</p>
           <span id="like-count">
             Likes: {blog.likes}{' '}
-            <button id="like-button" onClick={likeBlog}>
+            <button id="like-button" onClick={() => handleLikeBlog(blog)}>
               like
             </button>
           </span>
           <p>{blog.author}</p>
 
           {user.username === blog.user[0].username ? (
-            <button id="delete-button" onClick={deleteBlog}>
+            <button id="delete-button" onClick={() => handleDeleteBlog(blog)}>
               Remove
             </button>
           ) : null}

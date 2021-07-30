@@ -4,6 +4,7 @@ export const showNotification = (notification) => {
   if (window.notificationTimeout) {
     window.clearTimeout(window.notificationTimeout)
   }
+
   return async (dispatch) => {
     dispatch({ type: SHOW_NOTIFICATION, payload: notification })
 
