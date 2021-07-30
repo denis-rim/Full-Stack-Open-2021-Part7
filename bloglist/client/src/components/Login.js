@@ -1,47 +1,23 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
 import Notification from './Notification'
+import { useDispatch } from 'react-redux'
+import { setLoginUser } from '../store/actions/login'
 
-const Login = ({ setUser }) => {
+const Login = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem('blogAppUser', JSON.stringify(user))
-
-      blogService.setToken(user.token)
-
-      setUser(user)
-    } catch (error) {
-      if (!error.response.data.errorMessage) {
-        return setErrorMessage({
-          text: 'Something went wrong. Please try again later.',
-          type: 'error',
-        })
-      }
-      setErrorMessage({
-        text: error.response.data.errorMessage,
-        type: 'error',
-      })
-    }
+    dispatch(setLoginUser(username, password))
   }
 
   return (
     <div className="login">
       <div>
         <h3>Login to Blog App</h3>
-        <Notification message={errorMessage} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -73,7 +49,3 @@ const Login = ({ setUser }) => {
 }
 
 export default Login
-
-Login.propTypes = {
-  setUser: PropTypes.func.isRequired,
-}

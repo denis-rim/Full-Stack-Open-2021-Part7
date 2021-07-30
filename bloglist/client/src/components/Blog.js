@@ -26,7 +26,6 @@ const Blog = ({ user, blog }) => {
   }
 
   const handleDeleteBlog = (blog) => {
-    // await removeBlog(blog.id, blog)
     dispatch(deleteBlog(blog.id))
   }
 

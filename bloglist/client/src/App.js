@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Login from './components/Login'
@@ -11,23 +11,13 @@ import { setBlogs } from './store/actions/blogs'
 
 const App = () => {
   const dispatch = useDispatch()
-  const blogs = useSelector((state) => state.blogs.blogs)
-
-  const [user, setUser] = useState(null)
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
 
   const blogFormRef = useRef()
 
   useEffect(() => {
     dispatch(setBlogs())
-  }, [])
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('blogAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
   }, [])
 
   const showMessage = (text, type) => {
@@ -36,7 +26,6 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('blogAppUser')
-    setUser(null)
   }
 
   const addBlog = (blogObject) => {
@@ -88,7 +77,7 @@ const App = () => {
       })
   }
 
-  if (!user) return <Login setUser={setUser} />
+  if (!user.isLoggedIn) return <Login />
 
   const addBlogForm = () => (
     <Toggleable buttonLabel="Add blog" ref={blogFormRef}>
