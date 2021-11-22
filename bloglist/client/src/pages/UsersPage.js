@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import userServices from '../services/users'
 import Layout from '../components/shared/Layout'
 
@@ -32,7 +33,7 @@ const UserListComponents = ({ user }) => {
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <li>
-        <div className="block hover:bg-gray-50">
+        <Link to={`/users/${user.id}`} className="block hover:bg-gray-50">
           <div className="px-4 py-4 sm:px-6">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-indigo-600">
@@ -43,7 +44,7 @@ const UserListComponents = ({ user }) => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </li>
     </div>
   )

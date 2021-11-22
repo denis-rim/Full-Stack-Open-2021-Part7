@@ -4,11 +4,13 @@ import { token } from './blogs'
 const baseUrl = '/api/users'
 
 const getAllUsers = async () => {
-  const config = {
-    headers: { Authorization: token },
-  }
-  const response = await axios.get(baseUrl, config)
+  const response = await axios.get(baseUrl)
   return response.data
 }
 
-export default { getAllUsers }
+const getUserById = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
+export default { getAllUsers, getUserById }

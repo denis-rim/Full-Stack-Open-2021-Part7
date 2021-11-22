@@ -3,16 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import { useSelector } from 'react-redux'
+import UserPage from './pages/UserPage'
 import UsersPage from './pages/UsersPage'
-// import Blog from './components/Blog'
-// import blogService from './services/blogs'
-// import Login from './components/Login'
-// import Notification from './components/Notification'
-// import AddBlogForm from './components/AddBlogForm'
-// import Toggleable from './components/Toggleable'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { showNotification } from './store/actions/notification'
-// import { setBlogs } from './store/actions/blogs'
 
 const App = () => {
   // const dispatch = useDispatch()
@@ -103,7 +95,8 @@ const App = () => {
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route path="/users" component={UsersPage} />
+      <Route exact path="/users" component={UsersPage} />
+      <Route path="/users/:userId" component={UserPage} />
       <Redirect to="/" />
     </Switch>
   )
