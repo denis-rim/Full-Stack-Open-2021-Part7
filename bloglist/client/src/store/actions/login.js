@@ -1,7 +1,7 @@
 import loginService from '../../services/login'
 import blogService from '../../services/blogs'
 import { showNotification } from './notification'
-import { LOGIN_USER } from '../types/types'
+import { LOGIN_USER, LOGOUT_USER } from '../types/types'
 
 export const setLoginUser = (username, password) => {
   return async (dispatch) => {
@@ -16,5 +16,12 @@ export const setLoginUser = (username, password) => {
         dispatch(showNotification({ text: 'Login failed', type: 'error' }))
         console.error(error)
       })
+  }
+}
+
+export const logoutUser = () => {
+  return async (dispatch) => {
+    window.localStorage.removeItem('blogAppUser')
+    dispatch({ type: LOGOUT_USER })
   }
 }

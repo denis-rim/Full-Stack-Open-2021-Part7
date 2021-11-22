@@ -6,3 +6,4 @@ export const LIKE_BLOG = 'LIKE_BLOG'
 export const DELETE_BLOG = 'DELETE_BLOG'
 
 export const LOGIN_USER = 'LOGIN_USER'
+export const LOGOUT_USER = 'LOGOUT_USER'
