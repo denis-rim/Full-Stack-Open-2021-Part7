@@ -1,31 +1,54 @@
 const postRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const { userExtractor } = require('../utils/middleware')
 
 postRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', {
-    username: 1,
-    name: 1,
-    id: 1,
-  })
+  const blogs = await Blog.find({}).populate([
+    { path: 'user', select: { username: 1, name: 1, id: 1 } },
+    { path: 'comments' },
+  ])
+
   response.json(blogs)
 })
 
 postRouter.get('/:id', async (request, response) => {
   const blogId = request.params.id
 
-  const blog = await Blog.findById(blogId).populate('user', {
-    username: 1,
-    name: 1,
-    id: 1,
-  })
+  const blog = await Blog.findById(blogId).populate([
+    { path: 'user', select: { username: 1, name: 1, id: 1 } },
+    { path: 'comments' },
+  ])
 
   if (!blog) {
     return response.status(404).json({ errorMessage: 'Blog not found' })
   }
 
   response.json(blog)
+})
+
+postRouter.post('/:id/comments', async (request, response) => {
+  const blogId = request.params.id
+  const content = request.body.content
+
+  const blog = await Blog.findById(blogId)
+
+  if (!blog) {
+    return response.status(404).json({ errorMessage: 'Blog not found' })
+  }
+
+  const comment = new Comment({
+    content,
+  })
+
+  const savedComment = await comment.save()
+
+  blog.comments = blog.comments.concat(savedComment._id)
+
+  await blog.save()
+
+  response.json(savedComment)
 })
 
 postRouter.post('/', userExtractor, async (request, response) => {

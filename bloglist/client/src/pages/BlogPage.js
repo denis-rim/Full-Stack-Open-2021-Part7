@@ -22,7 +22,23 @@ const BlogPage = () => {
         <h1 className="text-3xl">Blog Page</h1>
       </div>
       <Blog blog={blog} />
+      <CommentsList comments={blog.comments} />
     </>
+  )
+}
+
+const CommentsList = ({ comments }) => {
+  return (
+    <ul className="mt-4">
+      {comments.map((comment) => (
+        <li
+          key={comment.id}
+          className="w-full mt-1 text-xl py-1 px-2 border border-gray-200"
+        >
+          {comment.content}
+        </li>
+      ))}
+    </ul>
   )
 }
 
