@@ -1,4 +1,10 @@
-import { CREATE_BLOG, DELETE_BLOG, INIT_BLOGS, LIKE_BLOG } from '../types/types'
+import {
+  ADD_COMMENT_TO_BLOG,
+  CREATE_BLOG,
+  DELETE_BLOG,
+  INIT_BLOGS,
+  LIKE_BLOG,
+} from '../types/types'
 
 const initialState = []
 
@@ -22,6 +28,23 @@ export const blogsReducer = (state = initialState, action) => {
 
     case CREATE_BLOG: {
       return [...state, payload]
+    }
+
+    case ADD_COMMENT_TO_BLOG: {
+      const { blogId, data: comment } = payload
+
+      const blogToAddComment = state.find((blog) => blog.id === blogId)
+
+      if (!blogToAddComment) {
+        break
+      }
+
+      const updatedBlog = {
+        ...blogToAddComment,
+        comments: [...blogToAddComment.comments, comment],
+      }
+
+      return state.map((blog) => (blog.id !== blogId ? blog : updatedBlog))
     }
 
     case DELETE_BLOG: {

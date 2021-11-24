@@ -5,6 +5,9 @@ export const INIT_BLOGS = 'SET_BLOGS'
 export const LIKE_BLOG = 'LIKE_BLOG'
 export const DELETE_BLOG = 'DELETE_BLOG'
 export const CREATE_BLOG = 'CREATE_BLOG'
+export const ADD_COMMENT_TO_BLOG = 'ADD_COMMENT_TO_BLOG'
 
 export const LOGIN_USER = 'LOGIN_USER'
 export const LOGOUT_USER = 'LOGOUT_USER'
+
+export const SET_USERS = 'SET_USERS'

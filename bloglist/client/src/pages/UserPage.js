@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import userServices from '../services/users'
 
 const UserPage = () => {
-  const [user, setUser] = useState(null)
   const { userId } = useParams()
-
-  useEffect(async () => {
-    const data = await userServices.getUserById(userId)
-    setUser(data)
-  }, [userId])
+  const user = useSelector((state) =>
+    state.users.find((user) => user.id === userId)
+  )
 
   if (!user) return null
 

@@ -1,5 +1,6 @@
 import blogsService from '../../services/blogs'
 import {
+  ADD_COMMENT_TO_BLOG,
   CREATE_BLOG,
   DELETE_BLOG,
   INIT_BLOGS,
@@ -41,6 +42,30 @@ export const createBlog = (blog, token) => {
           })
         )
         console.log(error.response)
+      })
+  }
+}
+
+export const addCommentToBlog = (blogId, comment) => {
+  return async (dispatch) => {
+    await blogsService
+      .addComment(blogId, comment)
+      .then((data) => {
+        dispatch({ type: ADD_COMMENT_TO_BLOG, payload: { blogId, data } })
+        dispatch(
+          showNotification({
+            text: 'Comment added',
+          })
+        )
+      })
+      .catch((error) => {
+        dispatch(
+          showNotification({
+            text: 'Failed to add comment',
+            type: 'error',
+          })
+        )
+        console.log(error)
       })
   }
 }

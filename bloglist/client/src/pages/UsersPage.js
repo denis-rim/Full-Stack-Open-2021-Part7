@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import userServices from '../services/users'
+import { setUsers } from '../store/actions/users'
 
 const UsersPage = () => {
-  const [users, setUsers] = useState([])
+  const users = useSelector((state) => state.users)
+  const dispatch = useDispatch()
 
-  useEffect(async () => {
-    const data = await userServices.getAllUsers()
-    setUsers(data)
+  useEffect(() => {
+    dispatch(setUsers())
   }, [])
 
   if (!users) {
