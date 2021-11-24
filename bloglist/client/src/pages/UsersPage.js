@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import userServices from '../services/users'
-import Layout from '../components/shared/Layout'
 
 const UsersPage = () => {
-  const [users, setUsers] = React.useState([])
+  const [users, setUsers] = useState([])
 
   useEffect(async () => {
     const data = await userServices.getAllUsers()
@@ -15,16 +14,14 @@ const UsersPage = () => {
     return <div>Loading...</div>
   }
   return (
-    <Layout>
-      <div>
-        <h1 className="text-center font-bold text-2xl">Users</h1>
-        <ul role="list" className="divide-y divide-gray-200 mt-4">
-          {users.map((user) => (
-            <UserListComponents key={user.id} user={user} />
-          ))}
-        </ul>
-      </div>
-    </Layout>
+    <div>
+      <h1 className="text-center font-bold text-2xl">Users</h1>
+      <ul role="list" className="divide-y divide-gray-200 mt-4">
+        {users.map((user) => (
+          <UserListComponents key={user.id} user={user} />
+        ))}
+      </ul>
+    </div>
   )
 }
 export default UsersPage

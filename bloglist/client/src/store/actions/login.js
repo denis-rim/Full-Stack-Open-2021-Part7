@@ -1,5 +1,4 @@
 import loginService from '../../services/login'
-import blogService from '../../services/blogs'
 import { showNotification } from './notification'
 import { LOGIN_USER, LOGOUT_USER } from '../types/types'
 
@@ -9,7 +8,6 @@ export const setLoginUser = (username, password) => {
       .login({ username, password })
       .then((data) => {
         window.localStorage.setItem('blogAppUser', JSON.stringify(data))
-        blogService.setToken(data.token)
         dispatch({ type: LOGIN_USER, payload: data })
       })
       .catch((error) => {

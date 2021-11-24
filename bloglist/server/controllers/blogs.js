@@ -12,6 +12,22 @@ postRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+postRouter.get('/:id', async (request, response) => {
+  const blogId = request.params.id
+
+  const blog = await Blog.findById(blogId).populate('user', {
+    username: 1,
+    name: 1,
+    id: 1,
+  })
+
+  if (!blog) {
+    return response.status(404).json({ errorMessage: 'Blog not found' })
+  }
+
+  response.json(blog)
+})
+
 postRouter.post('/', userExtractor, async (request, response) => {
   const { title, url, author, likes } = request.body
   const userId = request.user
@@ -33,16 +49,25 @@ postRouter.post('/', userExtractor, async (request, response) => {
     author,
     url,
     likes: likes || 0,
-    user: user._id,
+    user: user,
   })
 
   const savedBlog = await blog.save()
+
+  const populatedBlog = await Blog.populate(savedBlog, {
+    path: 'user',
+    select: {
+      username: 1,
+      name: 1,
+      id: 1,
+    },
+  })
 
   user.blogs = user.blogs.concat(savedBlog._id)
 
   await user.save()
 
-  response.json(savedBlog)
+  response.json(populatedBlog)
 })
 
 postRouter.delete('/:id', userExtractor, async (request, response) => {

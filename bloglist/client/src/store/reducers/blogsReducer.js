@@ -1,4 +1,4 @@
-import { DELETE_BLOG, INIT_BLOGS, LIKE_BLOG } from '../types/types'
+import { CREATE_BLOG, DELETE_BLOG, INIT_BLOGS, LIKE_BLOG } from '../types/types'
 
 const initialState = []
 
@@ -18,6 +18,10 @@ export const blogsReducer = (state = initialState, action) => {
       }
 
       return state.map((blog) => (blog.id !== payload.id ? blog : updatedBlog))
+    }
+
+    case CREATE_BLOG: {
+      return [...state, payload]
     }
 
     case DELETE_BLOG: {

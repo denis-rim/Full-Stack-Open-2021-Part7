@@ -1,29 +1,28 @@
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import userServices from '../services/users'
-import Layout from '../components/shared/Layout'
 
 const UserPage = () => {
-  const [user, setUser] = React.useState(null)
+  const [user, setUser] = useState(null)
   const { userId } = useParams()
 
   useEffect(async () => {
-    const user = await userServices.getUserById(userId)
-    setUser(user)
+    const data = await userServices.getUserById(userId)
+    setUser(data)
   }, [userId])
 
   if (!user) return null
 
   if (user && user.blogs.length === 0) {
     return (
-      <Layout>
-        <h2 className="text-center text-xl">User has no added blogs</h2>
-      </Layout>
+      <h2 className="text-center text-xl">
+        {user.username} has no added blogs
+      </h2>
     )
   }
 
   return (
-    <Layout>
+    <>
       <div>
         <h1 className="text-center font-bold text-2xl">{user.username}</h1>
       </div>
@@ -36,20 +35,20 @@ const UserPage = () => {
             className="bg-white shadow overflow-hidden sm:rounded-md"
           >
             <li>
-              <div className="block hover:bg-gray-50">
-                <div className="px-4 py-4 sm:px-6">
+              <Link to={`/blogs/${blog.id}`} className="block hover:bg-gray-50">
+                <div className="px-4 py-4 border border-gray-100 sm:px-6">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-indigo-600">
                       {blog.title}
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             </li>
           </div>
         ))}
       </ul>
-    </Layout>
+    </>
   )
 }
 

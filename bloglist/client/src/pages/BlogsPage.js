@@ -1,16 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-const HomePage = () => {
+const BlogsPage = () => {
   const blogs = useSelector((state) => state.blogs)
-
-  if (blogs.length === 0) {
-    return <div>No blog added yet</div>
-  }
 
   return (
     <div>
+      <h1 className="text-center font-bold text-2xl">Blogs</h1>
       <ul role="list" className="divide-y divide-gray-200 mt-4">
         {blogs.map((blog) => (
           <div
@@ -35,4 +32,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default BlogsPage

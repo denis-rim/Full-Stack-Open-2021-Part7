@@ -42,13 +42,12 @@ const Header = () => {
                 {user.user.username} is Logged in
               </span>
               <div className="space-x-4">
-                <a
-                  // onClick={() => setOpen(true)}
-                  href="#"
+                <Link
+                  to="/add-blog"
                   className="inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75"
                 >
                   Add Blog
-                </a>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
